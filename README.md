@@ -52,3 +52,29 @@ create table record (
 
 ### 代码结构
 
+后端代码放在src/main/java下，目录结构及负责的功能如下：
+
+* controller
+    > PersonController.java：接收GET/POST请求的API接口，并返回相应结果给前端
+* mapper
+    > PersonMapper.java: MyBatis要求的操作数据库的接口
+    > PersonMapper.xml: MyBatis要求的，对接口意义对应的具体的MySQL语句
+* model
+    > PersonRecord.java: 最基本的数据结构，代表数据库中一条记录，前后端数据交互用的bean的格式
+* service
+    > ExcelService.java: 提供读/写Excel功能的服务
+    > PersonService.java: 提供具体的业务功能，包括将业务数据的解析和写入/读取数据库
+* DemoApplication.java： 项目启动的main函数
+
+前端代码，数据库的schema，项目的配置文件都放在src/main/resources里
+
+* sql
+    > data.sql:数据库的初始insert语句，非必选
+    > schema.sql:数据库的初始create语句，非必选
+* static
+    > css：样式文件，从BootStrap复制而来
+    > js：样式文件，从BootStrap复制而来
+* templates
+    > index.html：前端页面，遵循Thymeleaf格式
+* application.yml：整个SpringMVC项目的配置文件
+
