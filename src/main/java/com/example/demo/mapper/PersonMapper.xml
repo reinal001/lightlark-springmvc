@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.PersonMapper">
+    <select id="selectAll" resultType="com.example.demo.model.PersonRecord">
+        SELECT * from person order by door_id asc, timeStr asc
+    </select>
+
+    <update id="updateAnnotation" parameterType="com.example.demo.model.PersonRecord">
+        update person
+        set is_correct=#{is_correct}, wrong_result=#{wrong_result}
+        where timeStr = #{timeStr} and door_id = #{door_id}
+    </update>
+
+    <insert id = "insertOneRecord" parameterType="com.example.demo.model.PersonRecord">
+        insert into person(timeStr, door_id, person_name, direction, picture)
+        values (#{timeStr}, #{door_id}, #{person_name}, #{direction}, #{picture});
+    </insert>
+
+    <delete id="deleteAll">
+        delete from person
+    </delete>
+</mapper>
+
