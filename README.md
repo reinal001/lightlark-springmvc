@@ -10,8 +10,13 @@ Spring Boot让这一切都变得太简单了。本项目只需要Intellij IDEA�
 2. **Java后端** api接口开发，bean注入，各项excel表格操作等
 3. 各种**数据库操作**
 
-### 初始化
-如果第一次git clone后出现无法读取application.yml的情况，在idea中File-Project Structure-Modules，将src/main/resources目录标记为Resources（资源）文件夹即可
+### 使用步骤
+
+1. 如果第一次git clone后出现无法读取application.yml的情况，在idea中File-Project Structure-Modules，将src/main/resources目录标记为Resources（资源）文件夹即可
+2. git clone https://github.com/reinal001/lightlark-springmvc.git
+3. 在DemoApplication.java中启动main函数
+4. 浏览器输入127.0.0.1:8081/person/list，出现页面（无数据）；输入127.0.0.1:8081/person/init进行数据初始化，再次访问127.0.0.1:8081/person/list，出现有数据页面。效果图见下方。
+
 ## 二、实现效果
 ***页面*** 鼠标悬浮文字时显示图片
 
