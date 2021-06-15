@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring MVC体验项目</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.min.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-table/bootstrap-table.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <style>
+     a img {
+           display:none;
+     }
+     a:hover img {
+           display:block;
+     }
+     #sweep_code{
+ 		  position: absolute;
+		  right: 220px;
+     }
+ </style>
+    <script type="text/javascript">
+        function downloadPerson(){
+             var url="/person/download";
+             window.open(url);
+        }
+
+    </script>
+</head>
+<body>
+
+<div class="container-fluid p-t-15">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-body">
+                <div id="toolbar" class="toolbar-btn-action" style="margin-bottom: 0%">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label class="sr-only" for="keyword">关键字</label>
+                            <input class="form-control mb-2 mr-sm-2" type="text" id="keyword" name="keyword" placeholder="多关键字以&分隔">
+                        </div>
+
+                        <div class="form-group">
+                            <a class="btn btn-success" style="margin-left:20px;margin-top:-3px" onclick="searchPerson()">
+                                <i class="fa fa-search"></i> 查询
+                            </a>
+                            <a class="btn btn-success" style="margin-left:20px;margin-top:-3px" onclick="downloadPerson()">
+                            <i class="fa fa-search"></i> 下载
+                            </a>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form name="formCurPage" th:method="post" th:action="@{/person/save}" th:object="${dataOneLine}">
+
+    <div style="overflow:scroll;">
+        <table class="table table-striped table-sm table-hover" style="min-width:1500px;">
+        <thead>
+        <tr>
+            <th>时间</th>
+            <th>出入口</th>
+            <th>姓名</th>
+            <th>方向</th>
+            <th>图片</th>
+            <th>查看</th>
+            <th>正确</th>
+            <th>错误</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="people, peopleStat:${dataList.list}">
+
+            <td><input type="text" id="timeStr" name="timeStr" th:value="${people.timeStr}" /></td>
+            <td><input type="text" name = "door_id" th:value="${people.door_id}" /></td>
+
+            <td th:text="${people.person_name}"></td>
+            <td th:text="${people.direction}"></td>
+            <td>
+                <a style="float: left;margin-left: 10px;margin-top: 10px">
+                    <div id="sweep_code">
+                        <img th:src="@{${'/person/seekPicture?path=' + people.picture}}" alt="" id="img"  width="320" height="180" />
+                    </div>
+                    [[${people.picture}]]
+                </a>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-primary" th:onclick="'window.open(\'' + @{${'/person/seekPicture?path='+people.picture}} + '\')'">详情</button>
+            </td>
+            <td><input type="checkbox" name="is_correct_array" th:checked="${people.is_correct}" th:value="${peopleStat.index}"></td>
+            <td>
+                <select name="wrong_result" >
+                    <option value ="aempty" th:selected="${people.wrong_result} eq 'aempty'"></option>
+                    <option value ="aemptyin" th:selected="${people.wrong_result} eq 'aemptyin'">入</option>
+                    <option value ="aemptyout" th:selected="${people.wrong_result} eq 'aemptyout'">出</option>
+                </select>
+            </td>
+            <td>
+                <input hidden="hidden" type="text" th:attr="name = pageNo" th:value="${dataList.pageNum}">
+            </td>
+
+
+            </tr>
+        <input type="submit" value="保存当前页" class="btn btn-warning" />
+            </tbody>
+        </table>
+    </div>
+    </form>
+</div>
+
+<div class="modal-footer no-margin-top">
+    <div class="col-md-6">
+        当前第 [[${dataList.pageNum}]] 页 | 共 [[${dataList.pages}]] 页 | [[${dataList.total}]] 条记录
+    </div>
+    <ul class="pagination pull-right" >
+        <li th:if="${dataList.hasPreviousPage}" style="margin:10px;">
+            <a th:href="'/person/list?pageNo=1'" >首页</a>
+        </li>
+
+        <li class="prev" th:if="${dataList.hasPreviousPage}" style="margin:10px;">
+            <a th:href="'/person/list?pageNo='+${dataList.prePage}">
+                <i class="ace-icon fa fa-angle-double-left"></i>
+            </a>
+        </li>
+        <!--遍历条数-->
+        <li th:each="nav:${dataList.navigatepageNums}" style="margin:10px;">
+            <a th:href="'/person/list?pageNo='+${nav}" th:text="${nav}" th:if="${nav != dataList.pageNum}"></a>
+            <span style="font-weight: bold;background: #6faed9;" th:if="${nav == dataList.pageNum}" th:text="${nav}" ></span>
+        </li>
+
+        <li class="next" th:if="${dataList.hasNextPage}" style="margin:10px;">
+            <a th:href="'/person/list?pageNo='+${dataList.nextPage}">
+                <i class="ace-icon fa fa-angle-double-right"></i>
+            </a>
+        </li>
+
+        <li style="margin:10px;">
+            <a th:href="'/person/list?pageNo='+${dataList.pages}" >尾页</a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

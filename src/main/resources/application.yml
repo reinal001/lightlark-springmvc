@@ -1,0 +1,35 @@
+server:
+  port: 8081
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:h2:~/test
+    platform: h2
+    username: sa
+    schema: classpath:sql/schema.sql
+#    data: classpath:sql/data.sql
+    initialization-mode: ALWAYS
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
+      settings:
+        web-allow-others: true
+logging:
+  level:
+    root: debug
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  helperDialect: h2
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
